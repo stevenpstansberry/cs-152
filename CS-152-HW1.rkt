@@ -58,7 +58,7 @@
 
 
 ;;;Question 6
-;;; Predicate flat? : Takes in list and returns boolean
+;;; Predicate flat? :  list -> boolean
 ;;;  This predicate will return #f if list contains a nested list, else it returns #t
 
 (define (flat? xs)
@@ -67,7 +67,17 @@
    (else (flat? (cdr xs))))) ; recursivelly call flat?
 
   
-  
+;;; Question 7
+;;; Function count-numbers : list -> number
+;;; This functio nreturns the count of the numbers in a list or its nested components
+;;; TODO
+(define (count-numbers xs)
+  (cond((null? xs) 0) ;base case, if our input list is empty, return 0
+  ((number? (car xs)) (+ 1(count-numbers (cdr xs)))) ; if number, add one and recurisvelly recall count-numbers on list
+  ((list? (cdr xs)) (+ 1 (count-numbers (cdr xs))))
+  (else (count-numbers (cdr xs)))))
+
+        
 
 
 
