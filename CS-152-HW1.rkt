@@ -51,14 +51,23 @@
 ;;; Function creates a new list by taking maximum
 ;;; of each index.
 (define (max-list xs ys)
-  (cond((and (null? xs) (null? ys)) '()) ; base case - if both xs and ys are empty, return empty list
+  (cond((and (null? xs) (null? ys)) '()) ; base case - if both xs and ys are empty, return empty list, occurs when length of xs and ys are same
     ((null? xs) ys) ; if xs is empty, return the reamainder of ys
     ((null? ys) xs) ; if ys is empty, return the remainder of xs
     (else (cons (max (car xs) (car ys)) (max-list (cdr xs) (cdr ys)))))) ; otherwise, recursively construct the max of xs vs ys with call to max list
 
 
+;;;Question 6
+;;; Predicate flat? : Takes in list and returns boolean
+;;;  This predicate will return #f if list contains a nested list, else it returns #t
 
+(define (flat? xs)
+  (cond((null? xs) #t) ;; if our list is empty, return true
+   ((list? (cdr xs)) #f) ; if the cdr returns a list, we have found a list,so return alse 
+   (else (flat? (cdr xs))))) ; recursivelly call flat?
 
+  
+  
 
 
 
