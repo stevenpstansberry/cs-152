@@ -98,8 +98,32 @@
           ((sum-of-squares-helper (cdr xs) (+ sofar (* (car xs) (car xs)))))
           (else (sum-of-squares-helper (cdr xs) sofar))))
   (sum-of-squares-helper xs 0))
-  
 
+
+
+;;; Question 10
+;;; Macro infix
+;;; infix allows for the use of evaluation of expressions where there is a binary operator between the operands
+
+(define-syntax infix
+  (syntax-rules (- + * / < >)
+    ((infix exp1 - exp2)
+     (- exp1 exp2))
+    
+    ((infix exp1 + exp2)
+     (+ exp1 exp2))
+    
+    ((infix exp1 * exp2)
+     (* exp1 exp2))
+    
+    ((infix exp1 / exp2)
+     (/ exp1 exp2))
+    
+      ((infix exp1 < exp2)
+     (< exp1 exp2))
+    
+    ((infix exp1 > exp2)
+     (> exp1 exp2))))
 
 
         
