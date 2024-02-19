@@ -62,7 +62,7 @@
 
 (define (flat? xs)
   (cond((null? xs) #t) ; if our list is empty, return true
-   ((list? (cdr xs)) #f) ; if the cdr returns a list, we have found a list, so return false 
+   ((list? (car xs)) #f) ; if the car returns a list, we have found a list, so return false 
    (else (flat? (cdr xs))))) ; recursively call flat?
 
   
