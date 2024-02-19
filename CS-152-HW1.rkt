@@ -1,5 +1,7 @@
 ;;; CS 152
 ;;; Boss Mode
+;;; Maryia Sakharava
+;;; Steven Stansberry
 
 
 
