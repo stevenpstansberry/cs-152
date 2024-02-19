@@ -7,7 +7,6 @@
 ;;; Function discriminant: three numbers -> number
 ;;; Returns the discriminant of three given numbers
 
-
 (define
   (discriminant a b c)
   (-(* b b) (* 4 a c)))
@@ -70,12 +69,14 @@
 ;;; Question 7
 ;;; Function count-numbers : list -> number
 ;;; This function returns the count of the numbers in a list or its nested components
-;;; TODO
+
 (define (count-numbers xs)
-  (cond((null? xs) 0) ;base case, if our input list is empty, return 0
-  ((number? (car xs)) (+ 1(count-numbers (cdr xs)))) ; if number, add one and recursively recall count-numbers on list
-  ((list? (cdr xs)) (+ 1 (count-numbers (cdr xs))))
-  (else (count-numbers (cdr xs)))))
+  (cond
+    ((null? xs) 0)  ; base case, if our input list is empty, return 0
+    ((number? (car xs)) (+ 1 (count-numbers (cdr xs))))  ; if car is a number, add one and recursively call count-numbers on the cdr
+    ((list? (car xs)) (+ (count-numbers (car xs)) (count-numbers (cdr xs))))  ; if car is a list, count numbers in both the car and cdr
+    (else (count-numbers (cdr xs)))))  
+
 
 ;;; Question 8
 ;;;Function leading : list predicate -> list
