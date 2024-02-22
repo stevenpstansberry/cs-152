@@ -87,22 +87,8 @@
 ;;; return a list of integers from start to stop (including start and 
 ;;; stop) separated by step.
 
-(define (make-list start stop step)
-  (if (> start stop) '()
-      (cons start (make-list (+ start step) stop step))))
+;(define (make-list))
 
-
-
-;;; Function remove-all: element list -> list 
-;;; return a new list obtained by removing all the occurrences ;;; 
-;;;of the element from the original list.
-  
-  
-(define (remove-all x xs)
-  (cond ((null? xs) '())
-  ((equal? x (car xs)) (remove-all x (cdr xs))) ;ignore car xs
-  (else (cons (car xs) (remove-all x (cdr xs)))))) ; add car xs since it is not the same
- 
 
 
 
