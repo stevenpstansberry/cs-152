@@ -34,9 +34,17 @@ wedge n (x:xs) = x:n: wedge n xs -- pattern for when list has more than one elem
 shout:: [String] -> String
 shout [] = [] -- empty list case
 shout (x:xs) = x ++ "!" ++ shout xs -- when the list has elements, append '!' to each word, followed by recursive call to shout xs
+--we want to use ++ since we are concatenting two list togethers, using : to construct list will result in error
 
 
 
+-- Question 9
+-- Function geoSequence: two Numeric types: a,r -> infinite list 
+-- takes in two numeric types and returns infinite list reresenting geometric sequence [a,ar,ar^2 ... ar^n]
+geoSequence:: Num b => b -> b -> [b]
+geoSequence a r = a : geoSequenceHelper (a * r) r -- construct list with inital a, then use helper method to recursively buil up list
+    where --use where binding to take advantage of lazy evaluation 
+        geoSequenceHelper a r = a : geoSequenceHelper (a * r) r -- recursively update previous a value by multiplying it by r and construct it to list
 
-
-
+--geoSequenceNext :: Num a => a -> a -> [a]
+--geoSequenceNext a r = a * r: geoSequenceNext (a * r) r
