@@ -88,7 +88,7 @@
 ;;; stop) separated by step.
 
 (define (make-list start stop step)
-  (if (> start stop) '()
+  (if (> start stop) '() 
       (cons start (make-list (+ start step) stop step))))
 
 
