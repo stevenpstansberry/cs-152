@@ -9,4 +9,8 @@
 -- element is repeated twice, maintaining order 
 
 echo:: [a] -> [a]
+echo [] = [] -- if input list is empty, return an empty list
+echo (x:xs) = x:x:echo xs -- when list has elements, construct a new list using first element twice alongside the recursive call to echo with the tail
+
+
 
