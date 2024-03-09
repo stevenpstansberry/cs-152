@@ -42,7 +42,7 @@ shout (x:xs) = x ++ "!" ++ shout xs -- when the list has elements, append '!' to
 -- Function geoSequence: two Numeric types: a,r -> infinite list 
 -- takes in two numeric types and returns infinite list reresenting geometric sequence [a,ar,ar^2 ... ar^n]
 geoSequence:: Num b => b -> b -> [b]
-geoSequence a r = a : geoSequenceHelper (a * r) r -- construct list with inital a, then use helper method to recursively buil up list
+geoSequence a r = a : geoSequenceHelper (a * r) r -- construct list with inital a, then use helper method to recursively build up list
     where --use where binding to take advantage of lazy evaluation 
         geoSequenceHelper a r = a : geoSequenceHelper (a * r) r -- recursively update previous a value by multiplying it by r and construct it to list
 
