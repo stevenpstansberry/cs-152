@@ -32,10 +32,10 @@ shortest [] = Nothing -- empty list base case
 shortest [x] = Just x -- if just one list in the list, return it
 shortest (x:xs) = -- if the list has lists within it...
     case shortest xs of --define the call to shortest xs
-        Just shortestXs 
-            | length x <= length shortestXs -> Just x -- if the length is less then previous call, return Just x to compare agsaisnt subsquent calls
-            | otherwise -> Just shortestXs 
-        Nothing -> Just x 
+        Just currentShortest 
+            | length x <= length currentShortest -> Just x -- if the length is less then previous call, return Just x to compare agsaisnt subsquent calls
+            | otherwise -> Just currentShortest -- the current list we are comparing agaisnt is not shortest, so we return the current shortest list.
+        Nothing -> Just x -- indicates we have reached the end, and we can return Just x, since there are no more elements left to compare agaisnt
 
 
 
@@ -66,9 +66,6 @@ double x = x * 2
 enhance :: (a -> a)  -> (a -> a) -- we want to intake and return a function, since composiiton can only be applied to functions
 enhance f =   (f . f).f
 --the takeaway with 8 is that we compositin can only be applied to functions
-
-
-
 
 
 -- Question 9
