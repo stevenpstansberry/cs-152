@@ -24,6 +24,12 @@ wedge n (x:xs) = x:n: wedge n xs -- pattern for when list has more than one elem
 
 
 
+--Question 5
+--Function shortest  list of lists -> Maybe list
+-- takes in list of lists and returns the shortest list, if it is an empty list, return Nothing
+shortest :: [[a]] -> Maybe [a]
+
+shortest [] = Nothing
 
 
 -- Question 7
