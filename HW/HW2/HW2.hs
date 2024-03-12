@@ -36,14 +36,19 @@ shout [] = [] -- empty list case
 shout (x:xs) = x ++ "!" ++ shout xs -- when the list has elements, append '!' to each word, followed by recursive call to shout xs
 --we want to use ++ since we are concatenting two list togethers, using : to construct list will result in error
 
+add :: Int -> Int -> Int
+add x y = x + y
+
+double :: Int -> Int
+double x = x * 2
 
 
 --- Question 8
 --- Function enhance: function a -> a
 --- takes in a function as its arguement and applies its effect 3 times
-enhance :: (a -> a)  -> (a -> a)
-enhance f =   f . f
-
+enhance :: (a -> a)  -> (a -> a) -- we want to intake and return a function, since composiiton can only be applied to functions
+enhance f =   (f . f).f
+--the takeaway with 8 is that we compositin can only be applied to functions
 
 
 
