@@ -38,6 +38,17 @@ shout (x:xs) = x ++ "!" ++ shout xs -- when the list has elements, append '!' to
 
 
 
+--- Question 8
+--- Function enhance: function a -> a
+--- takes in a function as its arguement and applies its effect 3 times
+enhance :: (a -> a)  -> (a -> a)
+enhance f =   f . f
+
+
+
+
+
+
 -- Question 9
 -- Function geoSequence: two Numeric types: a,r -> infinite list 
 -- takes in two numeric types and returns infinite list reresenting geometric sequence [a,ar,ar^2 ... ar^n]
