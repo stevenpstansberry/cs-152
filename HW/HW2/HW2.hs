@@ -28,8 +28,19 @@ wedge n (x:xs) = x:n: wedge n xs -- pattern for when list has more than one elem
 --Function shortest  list of lists -> Maybe list
 -- takes in list of lists and returns the shortest list, if it is an empty list, return Nothing
 shortest :: [[a]] -> Maybe [a]
+shortest [] = Nothing -- empty list base case 
+shortest [x] = Just x -- if just one list in the list, return it
+shortest (x:xs) = -- if the list has lists within it...
+    case shortest xs of --define the call to shortest xs
+        Just shortestXs 
+            | length x <= length shortestXs -> Just x -- if the length is less then previous call, return Just x to compare agsaisnt subsquent calls
+            | otherwise -> Just shortestXs 
+        Nothing -> Just x 
 
-shortest [] = Nothing
+
+
+
+
 
 
 -- Question 7
