@@ -34,8 +34,13 @@ addPairs (x:y:rest) = x + y: addPairs rest -- and first and second element toget
 
 
 -- Question 4
--- Function trailing 
-
+-- Function trailing: predicate, list -> list
+-- takes in a predicate and list, returning a new list where the first elements  matcjing the
+-- the criteria specified by the predicate are skipped over. List returned matches first element
+-- not meeting criteria as well all subsquent elements
+trailing:: (a -> Bool) -> [b] -> [b]
+trailing _[] = []
+trailing p (x:xs) = 
 --Question 5
 --Function shortest:  list of lists -> Maybe list
 -- takes in list of lists and returns the shortest list, if it is an empty list, return Nothing
