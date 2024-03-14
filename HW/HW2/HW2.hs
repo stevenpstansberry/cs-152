@@ -38,8 +38,15 @@ shortest (x:xs) = -- if the list has lists within it...
         Nothing -> Just x -- indicates we have reached the end, and we can return Just x, since there are no more elements left to compare agaisnt
 
 
+-- Question 6
+-- funciton minList: two lists -> one list
+-- takes in two list and returns a new list by choosing the minimum of each lists corresponding element, returns a list of length equal to the shorter list
+minList:: Ord a => [a] -> [a] -> [a] -- min reqires Ord constraint
+minList = zipWith min -- use partial application to compose zipWith and min
 
-
+-- minList _[] = []
+-- minList []_ = []
+-- minList (x:xs)(y:ys) = min x y : minList xs ys
 
 
 
