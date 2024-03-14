@@ -23,8 +23,8 @@ wedge _ [] = [] -- empty list case
 wedge n (x:xs) = x:n: wedge n xs -- pattern for when list has more than one element, constuct new list with x, element e, and the recursive call to wedge
 
 
---Question 3:
---Function addPairs: list of numbers -> list of numbers
+-- Question 3:
+-- Function addPairs: list of numbers -> list of numbers
 -- takes in a list of numbers and adds consucetive elements, constructing a new list of the sums of each pair
 -- last element is ignored if odd
 addPairs:: Num a => [a] -> [a]
@@ -33,8 +33,11 @@ addPairs [x] = [] -- ignore last element in odd length list by returning empty l
 addPairs (x:y:rest) = x + y: addPairs rest -- and first and second element together and recursively call addPairs to the remainder of the list
 
 
+-- Question 4
+-- Function trailing 
+
 --Question 5
---Function shortest  list of lists -> Maybe list
+--Function shortest:  list of lists -> Maybe list
 -- takes in list of lists and returns the shortest list, if it is an empty list, return Nothing
 shortest :: [[a]] -> Maybe [a]
 shortest [] = Nothing -- empty list base case 
