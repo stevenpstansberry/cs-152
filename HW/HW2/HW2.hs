@@ -67,6 +67,8 @@ shortest (x:xs) = -- if the list has lists within it...
 minList:: Ord a => [a] -> [a] -> [a] -- min reqires Ord constraint
 minList = zipWith min -- use partial application to compose zipWith and min. this will take in min as an argumenet to zipWith, and automatically insert the two lists we input as arguements to zipWith.
 
+
+-- this works too but it is not in point-free style, so its less idiomatic
 -- minList _[] = []
 -- minList []_ = []
 -- minList (x:xs)(y:ys) = min x y : minList xs ys
@@ -116,8 +118,8 @@ data Expression  = Atom Double
 
 evaluate:: Expression -> Double 
 evaluate (Atom e) = e -- unwrap the atom and return it as a double
-evaluate (Plus es) = foldl (+) 0 (fmap evaluate es) -- we start with 0 as an accumulator, folding the sum into that accumlator, and recursivelly using fmap on the remaining expressions
-evaluate (Times es) = foldl (*) 1 (fmap evaluate es)-- we start with 1 as an accumulator, folding the product into that accumlator, and recursivelly using fmap on the remaining expressions
+evaluate (Plus es) = foldl (+) 0 (fmap evaluate es) -- we start with 0 as an accumulator, folding the sum into that accumlator and recursivelly using fmap on the remaining expressions, and folding that into sum
+evaluate (Times es) = foldl (*) 1 (fmap evaluate es)-- we start with 1 as an accumulator, folding the product into that accumlator and recursivelly using fmap on the remaining expressions, and folding that into the product
 
 
 
