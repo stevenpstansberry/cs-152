@@ -42,7 +42,7 @@ shortest (x:xs) = -- if the list has lists within it...
 -- funciton minList: two lists -> one list
 -- takes in two list and returns a new list by choosing the minimum of each lists corresponding element, returns a list of length equal to the shorter list
 minList:: Ord a => [a] -> [a] -> [a] -- min reqires Ord constraint
-minList = zipWith min -- use partial application to compose zipWith and min
+minList = zipWith min -- use partial application to compose zipWith and min. this will take in min as an argumenet to zipWith, and automatically insert the two lists we input as arguements to zipWith.
 
 -- minList _[] = []
 -- minList []_ = []
