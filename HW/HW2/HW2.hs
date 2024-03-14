@@ -71,8 +71,6 @@ geoSequence a r = a : geoSequenceHelper (a * r) r -- construct list with inital 
     where --use where binding to take advantage of lazy evaluation 
         geoSequenceHelper a r = a : geoSequenceHelper (a * r) r -- recursively update previous a value by multiplying it by r and construct it to list
 
---geoSequenceNext :: Num a => a -> a -> [a]
---geoSequenceNext a r = a * r: geoSequenceNext (a * r) r
 
 
 --Question 10
