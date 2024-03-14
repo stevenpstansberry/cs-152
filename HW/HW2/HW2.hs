@@ -54,13 +54,6 @@ shout (x:xs) = x ++ "!" ++ shout xs -- when the list has elements, append '!' to
 --we want to use ++ since we are concatenting two list togethers, using : to construct list will result in error
 
 
--- testing methoods for enhance, remove later
-add :: Int -> Int -> Int
-add x y = x + y
-
-double :: Int -> Int
-double x = x * 2
-
 
 --- Question 8
 --- Function enhance: function a -> a
@@ -96,7 +89,7 @@ data Expression  = Atom Double
 evaluate:: Expression -> Double 
 evaluate (Atom e) = e -- unwrap the atom and return it as a double
 evaluate (Plus es) = foldl (+) 0 (fmap evaluate es) -- we start with 0 as an accumulator, folding the sum into that accumlator, and recursivelly using fmap on the remaining expressions
-evaluate (Times es) = foldl (*) 1 (fmap evaluate es)-- we start with 2 as an accumulator, folding the product into that accumlator, and recursivelly using fmap on the remaining expressions
+evaluate (Times es) = foldl (*) 1 (fmap evaluate es)-- we start with 1 as an accumulator, folding the product into that accumlator, and recursivelly using fmap on the remaining expressions
 
 
 
