@@ -53,6 +53,8 @@ shout [] = [] -- empty list case
 shout (x:xs) = x ++ "!" ++ shout xs -- when the list has elements, append '!' to each word, followed by recursive call to shout xs
 --we want to use ++ since we are concatenting two list togethers, using : to construct list will result in error
 
+
+-- testing methoods for enhance, remove later
 add :: Int -> Int -> Int
 add x y = x + y
 
@@ -78,3 +80,23 @@ geoSequence a r = a : geoSequenceHelper (a * r) r -- construct list with inital 
 
 --geoSequenceNext :: Num a => a -> a -> [a]
 --geoSequenceNext a r = a * r: geoSequenceNext (a * r) r
+
+
+--Question 10
+--function evaluate: Expression type -> Double
+--takes in an expression type, reperesenting a math operation and returns the
+--result of the operation as a double.
+
+data Expression  = Atom Double
+                 | Plus [Expression]
+                 | Times [Expression]
+         deriving Show 
+
+
+evaluate:: Expression -> Double 
+evaluate (Atom e) = e -- unwrap the atom and return it as a double
+evaluate (Plus es) = foldl (+) 0 (fmap evaluate es) -- we start with 0 as an accumulator, folding the sum into that accumlator, and recursivelly using fmap on the remaining expressions
+evaluate (Times es) = foldl (*) 1 (fmap evaluate es)-- we start with 2 as an accumulator, folding the product into that accumlator, and recursivelly using fmap on the remaining expressions
+
+
+
