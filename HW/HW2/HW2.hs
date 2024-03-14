@@ -39,9 +39,12 @@ addPairs (x:y:rest) = x + y: addPairs rest -- and first and second element toget
 -- the criteria specified by the predicate are skipped over. List returned matches first element
 -- not meeting criteria as well all subsquent elements
 -- TODO
-trailing:: (a -> Bool) -> [b] -> [b]
+trailing:: (a -> Bool) -> [a] -> [a]
 trailing _[] = []
-trailing p (x:xs) = undefined -- use guards?
+trailing p (x:xs) 
+                | p x == True = trailing p xs
+                | otherwise = x: xs
+                
 
 
 --Question 5
