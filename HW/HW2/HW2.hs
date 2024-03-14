@@ -29,7 +29,7 @@ wedge n (x:xs) = x:n: wedge n xs -- pattern for when list has more than one elem
 -- last element is ignored if odd
 addPairs:: Num a => [a] -> [a]
 addPairs [] = [] -- empty list base case
-addPairs [x] = [] -- ignore last element in odd length list by returning empty list
+addPairs [x] = [] -- ignore last element in an odd length list by returning empty list
 addPairs (x:y:rest) = x + y: addPairs rest -- and first and second element together and recursively call addPairs to the remainder of the list
 
 
@@ -38,11 +38,11 @@ addPairs (x:y:rest) = x + y: addPairs rest -- and first and second element toget
 -- takes in a predicate and list, returning a new list where the first elements  matcjing the
 -- the criteria specified by the predicate are skipped over. List returned matches first element
 -- not meeting criteria as well all subsquent elements
--- TODO
+
 trailing:: (a -> Bool) -> [a] -> [a]
 trailing _[] = [] -- empty list base case
 trailing p (x:xs) 
-                | p x == True = trailing p xs -- keep ignoring elements while prediate is true
+                | p x == True = trailing p xs -- ignore the first element when the predicate is true, and recursively call trailing on the rest of the list
                 | otherwise = x: xs -- when the predicate is false, construct a list with x and the remainder of the list
                 
 
@@ -56,8 +56,8 @@ shortest [x] = Just x -- if just one list in the list, return it
 shortest (x:xs) = -- if the list has lists within it...
     case shortest xs of --define the call to shortest xs 
         Just currentShortest 
-            | length x <= length currentShortest -> Just x -- if the length is less then previous call, return Just x to compare agsaisnt subsquent calls, Just x is now our shortest list
-            | otherwise -> Just currentShortest -- the current list we are comparing agaisnt is not shortest, so we return the current shortest list.
+            | length x <= length currentShortest -> Just x -- if the length is less then previous call, return Just x to compare agsaisnt subsquent calls, Just x is now our shortest list (currentShortest)
+            | otherwise -> Just currentShortest -- the current list we are comparing agaisnt is not shorter, so we return our currentShortest
         Nothing -> Just x -- indicates we have reached the end, and we can return Just x, since there are no more elements left to compare agaisnt
 
 
@@ -90,7 +90,7 @@ shout (x:xs) = x ++ "!" ++ shout xs -- when the list has elements, append '!' to
 --- takes in a function as its arguement and applies its effect 3 times
 enhance :: (a -> a)  -> (a -> a) -- we want to intake and return a function, since composiiton can only be applied to functions
 enhance f =   (f . f).f
---the takeaway with 8 is that we compositin can only be applied to functions
+--the takeaway with 8 is that we compositin can only be applied to functions, as a result we have to make sure that we return a function so it is a valid input for composition
 
 
 -- Question 9
