@@ -40,10 +40,10 @@ addPairs (x:y:rest) = x + y: addPairs rest -- and first and second element toget
 -- not meeting criteria as well all subsquent elements
 -- TODO
 trailing:: (a -> Bool) -> [a] -> [a]
-trailing _[] = []
+trailing _[] = [] -- empty list base case
 trailing p (x:xs) 
-                | p x == True = trailing p xs
-                | otherwise = x: xs
+                | p x == True = trailing p xs -- keep ignoring elements while prediate is true
+                | otherwise = x: xs -- when the predicate is false, construct a list with x and the remainder of the list
                 
 
 
