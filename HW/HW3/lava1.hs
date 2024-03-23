@@ -32,7 +32,7 @@ recognize ts = let r = rexpr ts
 rexpr :: [Token] -> [Token]
 rexpr (Operator _ : rest) = rexpr (rexpr rest) -- Operator <expr> <expr> case
 rexpr (PosNum _ : rest) = rest -- PosNum Case
-rexpr _ = error $ "Syntax Error - expected expression, got [] " --idk if we are supposed to hardcode the empty list
+rexpr _ = error $ "Syntax Error - expected expression, got " --idk if we are supposed to hardcode the empty list
    
 
 
