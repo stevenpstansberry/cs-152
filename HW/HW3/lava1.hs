@@ -15,18 +15,30 @@ scan = alexScanTokens
 
 
 -- STEP 2: uncomment each step as you work on it
-{-
-recognize :: [Token] -> Bool
 
+
+--data Token = Operator Char
+--           | PosNum Double
+--    deriving (Show, Eq)
+
+
+recognize :: [Token] -> Bool
+recognize ts = let r = rexpr ts
+               in case r of
+               [] -> True
+               _  -> error $ "Syntax Error - extra tokens: " ++ show r
 
 -- <expr> -> OPERATOR <expr> <expr> | POSNUMBER
 rexpr :: [Token] -> [Token]
-
+rexpr (Operator _ : rest) = rexpr (rexpr rest) -- Operator <expr> <expr> case
+rexpr (PosNum _ : rest) = rest -- PosNum Case
+rexpr _ = error $ "Syntax Error - expected expression, got [] "
+   
 
 
 check:: String -> Bool
 check = recognize.scan
--}
+
 
 
 -- STEP 3: uncomment each step as you work on it
