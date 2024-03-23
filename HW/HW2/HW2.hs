@@ -23,6 +23,55 @@ wedge _ [] = [] -- empty list case
 wedge n (x:xs) = x:n: wedge n xs -- pattern for when list has more than one element, constuct new list with x, element e, and the recursive call to wedge
 
 
+-- Question 3:
+-- Function addPairs: list of numbers -> list of numbers
+-- takes in a list of numbers and adds consucetive elements, constructing a new list of the sums of each pair
+-- last element is ignored if odd
+addPairs:: Num a => [a] -> [a]
+addPairs [] = [] -- empty list base case
+addPairs [x] = [] -- ignore last element in an odd length list by returning empty list
+addPairs (x:y:rest) = x + y: addPairs rest -- and first and second element together and recursively call addPairs to the remainder of the list
+
+
+-- Question 4
+-- Function trailing: predicate, list -> list
+-- takes in a predicate and list, returning a new list where the first elements  matcjing the
+-- the criteria specified by the predicate are skipped over. List returned matches first element
+-- not meeting criteria as well all subsquent elements
+
+trailing:: (a -> Bool) -> [a] -> [a]
+trailing _[] = [] -- empty list base case
+trailing p (x:xs) 
+                | p x == True = trailing p xs -- ignore the first element when the predicate is true, and recursively call trailing on the rest of the list
+                | otherwise = x: xs -- when the predicate is false, construct a list with x and the remainder of the list
+                
+
+
+--Question 5
+--Function shortest:  list of lists -> Maybe list
+-- takes in list of lists and returns the shortest list, if it is an empty list, return Nothing
+shortest :: [[a]] -> Maybe [a]
+shortest [] = Nothing -- empty list base case 
+shortest [x] = Just x -- if just one list in the list, return it
+shortest (x:xs) = -- if the list has lists within it...
+    case shortest xs of --define the call to shortest xs 
+        Just currentShortest 
+            | length x <= length currentShortest -> Just x -- if the length is less then previous call, return Just x to compare agsaisnt subsquent calls, Just x is now our shortest list (currentShortest)
+            | otherwise -> Just currentShortest -- the current list we are comparing agaisnt is not shorter, so we return our currentShortest
+        Nothing -> Just x -- indicates we have reached the end, and we can return Just x, since there are no more elements left to compare agaisnt
+
+
+-- Question 6
+-- funciton minList: two lists -> one list
+-- takes in two list and returns a new list by choosing the minimum of each lists corresponding element, returns a list of length equal to the shorter list
+minList:: Ord a => [a] -> [a] -> [a] -- min reqires Ord constraint
+minList = zipWith min -- use partial application to compose zipWith and min. this will take in min as an argumenet to zipWith, and automatically insert the two lists we input as arguements to zipWith.
+
+
+-- this works too but it is not in point-free style, so its less idiomatic
+-- minList _[] = []
+-- minList []_ = []
+-- minList (x:xs)(y:ys) = min x y : minList xs ys
 
 
 
@@ -38,6 +87,14 @@ shout (x:xs) = x ++ "!" ++ shout xs -- when the list has elements, append '!' to
 
 
 
+--- Question 8
+--- Function enhance: function a -> a
+--- takes in a function as its arguement and applies its effect 3 times
+enhance :: (a -> a)  -> (a -> a) -- we want to intake and return a function, since composiiton can only be applied to functions
+enhance f =   (f . f).f
+--the takeaway with 8 is that we compositin can only be applied to functions, as a result we have to make sure that we return a function so it is a valid input for composition
+
+
 -- Question 9
 -- Function geoSequence: two Numeric types: a,r -> infinite list 
 -- takes in two numeric types and returns infinite list reresenting geometric sequence [a,ar,ar^2 ... ar^n]
@@ -46,5 +103,23 @@ geoSequence a r = a : geoSequenceHelper (a * r) r -- construct list with inital 
     where --use where binding to take advantage of lazy evaluation 
         geoSequenceHelper a r = a : geoSequenceHelper (a * r) r -- recursively update previous a value by multiplying it by r and construct it to list
 
---geoSequenceNext :: Num a => a -> a -> [a]
---geoSequenceNext a r = a * r: geoSequenceNext (a * r) r
+
+
+--Question 10
+--function evaluate: Expression type -> Double
+--takes in an expression type, reperesenting a math operation and returns the
+--result of the operation as a double.
+
+data Expression  = Atom Double
+                 | Plus [Expression]
+                 | Times [Expression]
+         deriving Show 
+
+
+evaluate:: Expression -> Double 
+evaluate (Atom e) = e -- unwrap the atom and return it as a double
+evaluate (Plus es) = foldl (+) 0 (fmap evaluate es) -- we start with 0 as an accumulator, folding the sum into that accumlator and recursivelly using fmap on the remaining expressions, and folding that into sum
+evaluate (Times es) = foldl (*) 1 (fmap evaluate es)-- we start with 1 as an accumulator, folding the product into that accumlator and recursivelly using fmap on the remaining expressions, and folding that into the product
+
+
+
