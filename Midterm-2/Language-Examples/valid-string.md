@@ -17,7 +17,7 @@ Yes
 ```php
 <expr>
 
--> <expr> PLUS <expr>
+-> <expr> PLUS <term>
 -> <term> PLUS <term>
 -> <factor> PLUS <term>
 -> NUMBER PLUS <term>
