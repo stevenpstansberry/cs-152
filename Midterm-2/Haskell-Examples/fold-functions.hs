@@ -32,4 +32,4 @@ Use foldl or foldr to implement this function.
 -}
 
 reverseFold :: [a] -> [a]
-reverseFold = foldr (\acc x -> x : acc) []
+reverseFold = foldl (\acc x -> x : acc) []
