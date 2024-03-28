@@ -47,7 +47,7 @@ syntax error
 ## Example 4:
 
 
-String: 2 * (3 + 4
+String: 2 * (3 + 4 
 Question: Is 2 * (3 + 4 valid in the language defined by the given grammar? If not, what type of error is generated?
 
 No,
