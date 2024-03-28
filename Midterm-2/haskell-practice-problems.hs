@@ -23,4 +23,8 @@ retrieve _ [] = Nothing -- base case
 retrieve k ((k',v'):xs) | k == k' = Just v' -- we can extract k' and v' out of the tuple and define xs as the rest of the list
                       | otherwise = retrieve k xs --use guards to idomatically handle conditonals - call retrieve on the rest of the tuples
 
+
+
+
+
                       
