@@ -24,3 +24,12 @@ instead, utilize foldl or foldr.
 maximumFold :: [Int] -> Int
 maximumFold [] = error "empty"
 maximumFold (x:xs) = foldl (\acc y -> if y > acc then y else acc) x xs
+
+{-
+Question 3: Reverse a List
+Create a function reverseFold that reverses a list. 
+Use foldl or foldr to implement this function.
+-}
+
+reverseFold :: [a] -> [a]
+reverseFold = foldr (\acc x -> x : acc) []
