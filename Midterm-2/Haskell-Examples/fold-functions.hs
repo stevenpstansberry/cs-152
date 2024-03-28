@@ -43,3 +43,15 @@ The function should apply a given function to each element of a list.
 
 mapFold :: (a -> b) -> [a] -> [b]
 mapFold f = foldr (\x acc -> f x : acc) []
+
+{-
+Question 5: Count True Values
+Write a function countTrue that
+counts the number of True values
+in a list of Boolean values using 
+foldl or foldr
+-}
+
+countTrue :: [Bool] -> Int
+countTrue [] = error "empty"
+countTrue xs = foldl(\acc y-> if y then acc + 1 else acc) 0 xs
