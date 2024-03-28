@@ -33,3 +33,13 @@ Use foldl or foldr to implement this function.
 
 reverseFold :: [a] -> [a]
 reverseFold = foldl (\acc x -> x : acc) []
+
+{-
+Question 4: Implement Map Using Fold
+Define a function mapFold that mimics the 
+behavior of the map function using foldr. 
+The function should apply a given function to each element of a list.
+-}
+
+mapFold :: (a -> b) -> [a] -> [b]
+mapFold f = foldr (\x acc -> f x : acc) []
