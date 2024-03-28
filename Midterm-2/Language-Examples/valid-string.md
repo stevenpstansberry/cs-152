@@ -41,6 +41,8 @@ Question: Is (3 + 4) * 5 valid in the language defined by the given grammar? If 
 String: 3 +
 Question: Is 3 + valid in the language defined by the given grammar? If not, what type of error is generated?
 
+No,
+syntax error
 
 ## Example 4:
 
@@ -48,9 +50,14 @@ Question: Is 3 + valid in the language defined by the given grammar? If not, wha
 String: 2 * (3 + 4
 Question: Is 2 * (3 + 4 valid in the language defined by the given grammar? If not, what type of error is generated?
 
+No,
+syntax error
 
 ## Example 5:
 
 
 String: 9 * 3 + (7 - 2)
 Question: Is 9 * 3 + (7 - 2) valid in the language defined by the given grammar? If not, what type of error is generated?
+
+No,
+lexical error, '-' is not defined in the grammar
