@@ -3,6 +3,7 @@
 module Lava1 where -- do not remove
 
 import Tokens  -- Make sure you run alex to generate you scanner after you modify tokens.x
+import Graphics.Win32 (ptInRegion)
 
 
 data ParseTree = NumNode Double
@@ -42,14 +43,36 @@ check = recognize.scan
 
 
 -- STEP 3: uncomment each step as you work on it
-{-
--- <expr> -> OPERATOR <expr> <expr> | POSNUMBER
-expr :: [Token] -> (Maybe ParseTree, [Token])
 
+-- <expr> -> OPERATOR <expr> <expr> | POSNUMBER
+
+
+expr :: [Token] -> (Maybe ParseTree, [Token])
+expr (Operator op:tokens) = 
+    case expr tokens of
+        (Just leftTree, rest1) -> 
+            case expr rest1 of
+                (Just rightTree, rest2) -> (Just (OpNode op leftTree rightTree), rest2)
+                _ -> (Nothing, tokens)
+        _ -> (Nothing, tokens)
+expr (PosNum num:tokens) = (Just (NumNode num), tokens)
+expr _ = (Nothing, [])
+
+
+
+                        
 
 stringToTree:: String -> ParseTree
 stringToTree = parse.scan -- for testing convenience
--}
+
+parse :: [Token] -> ParseTree
+parse ts = let (maybePt, r) = expr ts in
+    case maybePt of
+        Nothing -> error "invalid expression "
+        Just pt -> case r of
+            [] -> pt
+            _  -> error $ "extra tokens" ++ show r
+
 
 
 -- STEP 4: uncomment each step as you work on it
