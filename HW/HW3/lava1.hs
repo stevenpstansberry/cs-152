@@ -51,14 +51,16 @@ check = recognize.scan
 
 
 expr :: [Token] -> (Maybe ParseTree, [Token])
-expr (Operator op:tokens) = 
-    case expr tokens of
+expr (Operator op:tokens) =    -- <expr> -> OPERATOR <expr> <expr>
+    case expr tokens of              -- recursive call to expr
         (Just leftTree, rest1) -> 
-            case expr rest1 of
-                (Just rightTree, rest2) -> (Just (OpNode op leftTree rightTree), rest2)
+            case expr rest1 of   -- rest1 corresponds to 1st <expr> in the <expr> definition
+                (Just rightTree, rest2) -> (Just (OpNode op leftTree rightTree), rest2) -- rest2 corresponds to 2nd <expr> in the <expr> definition
                 _ -> (Nothing, tokens)
         _ -> (Nothing, tokens)
-expr (PosNum num:tokens) = (Just (NumNode num), tokens)
+
+expr (PosNum num:tokens) = (Just (NumNode num), tokens) -- <expr> -> POSNUMBER
+
 expr _ = (Nothing, [])
 
 
@@ -71,10 +73,10 @@ stringToTree = parse.scan -- for testing convenience
 parse :: [Token] -> ParseTree
 parse ts = let (maybePt, r) = expr ts in
     case maybePt of
-        Nothing -> error $ "Syntax Error invalid expression " ++ show r
-        Just pt -> case r of
-            [] -> pt
-            _  -> error $ "extra tokens" ++ show r
+        Nothing -> error $ "Syntax Error invalid expression " ++ show r 
+        Just pt -> case r of -- tokens successfully consumed
+            [] -> pt -- if all tokens are exhausted it means all tokens consumed
+            _  -> error $ "extra tokens" ++ show r -- extra tokens found, error
 
 
 
