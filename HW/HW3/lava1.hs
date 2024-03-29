@@ -77,9 +77,17 @@ parse ts = let (maybePt, r) = expr ts in
 
 -- STEP 4: uncomment each step as you work on it
 
-{-
-eval ::  ParseTree -> Double
+
+eval :: ParseTree -> Double
+eval (NumNode n) = n
+eval (OpNode op left right) =
+    case op of
+      '+' -> eval left + eval right
+      '-' -> eval left - eval right
+      '*' -> eval left * eval right
+      '/' -> eval left / eval right
+      _   -> error "Unknown operator"
 
 interpret :: String -> Double
 interpret = eval.parse.scan
--}
+
