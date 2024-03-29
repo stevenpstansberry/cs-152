@@ -1,5 +1,8 @@
 {- CS 152 Homework 3:  Lava 1.0
-   Team Name:          -}
+   Team Name:          Boss Mode
+                       Maryia Sakharava
+                       Steven Stansberry
+   -}
 module Lava1 where -- do not remove
 
 import Tokens  -- Make sure you run alex to generate you scanner after you modify tokens.x
