@@ -68,7 +68,7 @@ stringToTree = parse.scan -- for testing convenience
 parse :: [Token] -> ParseTree
 parse ts = let (maybePt, r) = expr ts in
     case maybePt of
-        Nothing -> error "invalid expression "
+        Nothing -> error $ "Syntax Error invalid expression " ++ show r
         Just pt -> case r of
             [] -> pt
             _  -> error $ "extra tokens" ++ show r
