@@ -1,5 +1,5 @@
 {
-module Tokens  where
+module Tokens2  where
 }
 
 %wrapper "basic"
@@ -7,11 +7,6 @@ module Tokens  where
 -- Add your token regular expressions and associated actions below.
 tokens :-
   $white+                        ;
-  "+"     { \s -> Operator '+' }
-  "-"     { \s -> Operator '-' }
-  "*"     { \s -> Operator '*' }
-  "/"     { \s -> Operator '/' }
-  [0-9]+(\.[0-9]+)?       { \s -> PosNum (read s) }
 
 
 {
@@ -21,9 +16,9 @@ tokens :-
 
 data Token = Operator Char
            | PosNum Double
+           | Let
+           | Lambda
+           | In
+           | Identifier String
     deriving (Show, Eq)
-
-main = do
-  s <- getContents
-  print (alexScanTokens s)
 }
