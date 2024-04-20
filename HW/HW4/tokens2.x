@@ -17,7 +17,7 @@ tokens :-
   "in"                { \s -> In }
   [a-zA-Z_][a-zA-Z0-9_]*    { \s -> Identifier s }
 
-  --scan "+ 2 a$" this produces an error, need to fix
+  --scan "+ 2 a$" this produces an error, the $ produces an error, need to fix
 
 {
 -- Each action has type :: String -> Token
