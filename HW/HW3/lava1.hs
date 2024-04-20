@@ -61,10 +61,10 @@ parse :: [Token] -> ParseTree
 parse ts =
   let (maybePt, r) = expr ts
    in case maybePt of
-        Nothing -> error $ "Syntax Error invalid expression " ++ show r
+        Nothing -> error $ "Syntax Error: invalid expression " ++ show r
         Just pt -> case r of -- tokens successfully consumed
           [] -> pt -- if all tokens are exhausted it means all tokens consumed
-          _ -> error $ "extra tokens" ++ show r -- extra tokens found, error
+          _ -> error $ "Syntax Error: extra tokens" ++ show r -- extra tokens found, error
 
 -- STEP 4: uncomment each step as you work on it
 
