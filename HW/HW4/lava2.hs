@@ -106,3 +106,14 @@ application ts =
 
 stringToTree :: String -> ParseTree
 stringToTree = parse . scan -- for testing convenience
+
+-- Question 3: uncomment each step as you work on it
+
+{-
+eval :: [(String, Double)] -> ParseTree -> Double
+
+evalinit :: ParseTree -> Double
+
+interpret :: String -> Double
+interpret = evalinit.parse.scan
+-}
