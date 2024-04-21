@@ -19,6 +19,11 @@ scan = alexScanTokens
 
 -- Question 2: uncomment each step as you work on it
 
+--  stringToTree "lambda x + 5 x"
+-- this test case is supposed to give an error but it works
+--  stringToTree "let x 5  in lambda x 2"
+-- same with this one
+
 parse :: [Token] -> ParseTree
 parse ts =
   let (maybePt, r) = expr ts
@@ -35,94 +40,69 @@ parse ts =
 --          | <application>
 
 expr :: [Token] -> (Maybe ParseTree, [Token])
-expr tokens = case tokens of
-  -- OPERATOR <expr> <expr
-  (Operator op : ts) ->
-    let (Just e1, ts1) = expr ts
-        (Just e2, ts2) = expr ts1
-     in (Just (OpNode op e1 e2), ts2)
-  --  POSNUM
-  (PosNum n : ts) ->
-    (Just (NumNode n), ts)
-  -- IDENTIFIER
-  (Identifier id : ts) ->
-    (Just (IdentNode id), ts)
-  -- LET  IDENTIFIER <expr>  IN <expr>
-  (Let : Identifier id : ts) ->
-    let (Just e1, In : ts1) = expr ts
-        (Just e2, ts2) = expr ts1
-     in (Just (LetNode id e1 e2), ts2)
-  _ -> (Nothing, tokens) -- unexpected token or empty list
+expr (Operator op : ts) =
+  let (maybeE1, rest1) = expr ts -- recursive call to rest of tokens
+   in case maybeE1 of
+        Just e1 ->
+          let (maybeE2, rest2) = expr rest1 -- recursive call to rest1
+           in case maybeE2 of
+                Just e2 -> (Just (OpNode op e1 e2), rest2)
+                Nothing -> (Nothing, ts) -- checks second tree
+        Nothing -> (Nothing, ts) -- checks first tree
+expr [] = (Nothing, []) -- base case
+-- POSNUM
+expr (PosNum n : ts) = (Just (NumNode n), ts)
+-- IDENTIFIER
+
+expr (Identifier id : ts) = (Just (IdentNode id), ts)
+-- LET  IDENTIFIER <expr>  IN <expr>
+
+expr (Let : Identifier id : ts) =
+  let (maybeE1, rest1) = expr ts
+   in case rest1 of
+        (In : rest2) ->
+          let (maybeE2, rest3) = expr rest2
+           in case (maybeE1, maybeE2) of
+                (Just e1, Just e2) -> (Just (LetNode id e1 e2), rest3)
+                _ -> (Nothing, ts)
+        _ -> (Nothing, ts)
+-- <application>
+
+expr (Lambda : Identifier param : ts) =
+  let (maybeBody, rest1) = expr ts -- recursive call to expr
+   in case maybeBody of -- check to see if body is valid
+        Just body ->
+          -- Look ahead for possible application
+          case rest1 of
+            [] -> (Just (FunctionNode param body), rest1) -- check for application
+            _ ->
+              let (maybeArg, rest2) = expr rest1
+               in case maybeArg of
+                    Just arg -> (Just (Application (FunctionNode param body) arg), rest2) -- return application
+                    Nothing -> (Nothing, rest1)
+        Nothing -> (Nothing, ts)
+expr tokens = (Nothing, tokens)
 
 -- <function> -> LAMBDA  IDENTIFIER  <expr>
 
 function :: [Token] -> (Maybe ParseTree, [Token])
 function (Lambda : Identifier parameter : ts) =
-  let (Just body, ts') = expr ts
-   in (Just (FunctionNode parameter body), ts')
+  let (Just body, rest1) = expr ts
+   in (Just (FunctionNode parameter body), rest1) -- return function node with parameter
 function _ = (Nothing, [])
 
 -- <application> ->   <function> <expr>
 application :: [Token] -> (Maybe ParseTree, [Token])
-application tokens =
-  let (maybeFunc, restTokens) = function tokens
+application ts =
+  let (maybeFunc, rest1) = function ts -- parse from start of ts
    in case maybeFunc of
         Just func ->
-          let (maybeExpr, finalTokens) = expr restTokens
+          -- successful parse
+          let (maybeExpr, rest2) = expr rest1 -- read rest1 and attempt to create applicationNode
            in case maybeExpr of
-                Just expr -> (Just (Application func expr), finalTokens)
-                Nothing -> (Nothing, restTokens)
-        Nothing -> (Nothing, tokens)
+                Just expr -> (Just (Application func expr), rest2) -- applicationNode returned
+                Nothing -> (Nothing, rest1) -- rest1 failed parse
+        Nothing -> (Nothing, ts) -- ts failed parse
 
 stringToTree :: String -> ParseTree
 stringToTree = parse . scan -- for testing convenience
-
-{-
-> stringToTree "let grade + 80 1 in * grade 1.2"
-
-LetNode "grade" (OpNode '+' (NumNode 80.0) (NumNode 1.0)) (OpNode '*' (IdentNode "grade") (NumNode 1.2))
-
-> stringToTree "lambda x + x * 2  x 5"
-
-Application (FunctionNode "x" (OpNode '+' (IdentNode "x") (OpNode '*' (NumNode 2.0) (IdentNode "x")))) (NumNode 5.0)
-
-> stringToTree   "let first 1 in let second 2 in + first second"
-
-LetNode "first" (NumNode 1.0) (LetNode "second" (NumNode 2.0) (OpNode '+' (IdentNode "first") (IdentNode "second")))
-
-> stringToTree  "let y 6 in lambda x + x * y  3 5"
-
-LetNode "y" (NumNode 6.0) (Application (FunctionNode "x" (OpNode '+' (IdentNode "x") (OpNode '*' (IdentNode "y") (NumNode 3.0)))) (NumNode 5.0))
-
-> stringToTree "+ 4 1  grade"
-
-\*** Exception: Syntax Error - extra tokens:  [Identifier "grade"]
-
-> stringToTree "let grade 5 + grade 6   "
-
-Exception: Syntax Error - invalid expression [Let,Identifier "grade",PosNum 5.0,Operator '+',Identifier "grade",PosNum 6.0]
-
-> stringToTree "lambda x + 5 x"
-
-\*** Exception: Syntax Error - invalid expression []
-
-i> stringToTree "lambda 3 +x 800"
-
-\*** Exception: Syntax Error - invalid expression [Lambda,PosNum 3.0,Operator '+',Identifier "x",PosNum 800.0]
-
->  stringToTree "let x 5  in lambda x 2"
-
-\*** Exception: Syntax Error - invalid expression [Lambda,Identifier "x",PosNum 2.0]
-
--}
-
--- Question 3: uncomment each step as you work on it
-
-{-
-eval :: [(String, Double)] -> ParseTree -> Double
-
-evalinit :: ParseTree -> Double
-
-interpret :: String -> Double
-interpret = evalinit.parse.scan
--}
