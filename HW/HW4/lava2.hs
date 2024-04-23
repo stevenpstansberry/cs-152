@@ -72,9 +72,21 @@ expr (Let : Identifier id : ts) =
                 (Just e1, Just e2) -> (Just (LetNode id e1 e2), rest3)
                 _ -> (Nothing, ts)
         _ -> (Nothing, ts)
--- <application>
+        
+{-
+-- this functions is needed to handle the lambda expressions, however it makes test cases fail in Question 2
+expr (Lambda : Identifier param : ts) =  -- Handle lambda expressions
+    let (body, rest1) = expr ts
+    in case body of
+        Just b -> (Just (FunctionNode param b), rest1)
+        Nothing -> (Nothing, ts)
+        
+-}
 
 expr tokens = (Nothing, tokens)
+-- <application>
+
+
 
 
 -- <function> -> LAMBDA  IDENTIFIER  <expr>
@@ -86,32 +98,61 @@ function (Lambda : Identifier parameter : ts) =
     Just b -> case rest1 of
         [] -> (Just (FunctionNode parameter b), rest1)
         _ -> (Nothing, ts)
-    Nothing -> (Nothing, ts)  -- Error in parsing the body of the function
+    Nothing -> (Nothing, ts)
 function _ = (Nothing, [])
 
 -- <application> ->   <function> <expr>
 application :: [Token] -> (Maybe ParseTree, [Token])
 application ts =
-  let (maybeFunc, rest1) = function ts -- parse from start of ts
-   in case maybeFunc of
-        Just func ->
-          -- successful parse
-          let (maybeExpr, rest2) = expr rest1 -- read rest1 and attempt to create applicationNode
-           in case maybeExpr of
-                Just expr -> (Just (Application func expr), rest2) -- applicationNode returned
-                Nothing -> (Nothing, rest1) -- rest1 failed parse
-        Nothing -> (Nothing, ts) -- ts failed parse
-
+  let maybeFuncResult = function ts
+  in case maybeFuncResult of
+       (Just func, rest1) ->
+           case rest1 of
+             [] -> (Just func, [])  -- If no more tokens, return the function
+             _ -> let maybeExprResult = expr rest1  -- Parse next expression
+                  in case maybeExprResult of
+                     (Just expr, rest2) -> (Just (Application func expr), rest2)  -- Successful application
+                     (Nothing, rest2) -> (Nothing, rest2)  -- Failed to parse expression
+       (Nothing, rest1) -> (Nothing, rest1)  -- Function parsing failed
+       
 stringToTree :: String -> ParseTree
 stringToTree = parse . scan -- for testing convenience
 
 -- Question 3: uncomment each step as you work on it
 
-{-
-eval :: [(String, Double)] -> ParseTree -> Double
 
+eval :: [(String, Double)] -> ParseTree -> Double
+eval _ (NumNode n) = n
+eval env (IdentNode id) =
+    case lookup id env of
+        Just value -> value
+        Nothing -> error $ "Undefined Identifier: " ++ id
+eval env (OpNode op left right) =
+    let lval = eval env left
+        rval = eval env right
+    in case op of
+        '+' -> lval + rval
+        '-' -> lval - rval
+        '*' -> lval * rval
+        '/' -> lval / rval
+        _ -> error "Unsupported operator"
+eval env (LetNode id expr body) =
+    let val = eval env expr
+        newEnv = (id, val) : env
+    in eval newEnv body
+eval env (FunctionNode param body) =
+    error "FunctionNode should not be directly evaluated without an application."
+eval env (Application func arg) =
+    case func of
+        FunctionNode param body ->
+            let argVal = eval env arg
+                newEnv = (param, argVal) : env
+            in eval newEnv body
+        _ -> error "Application requires a function as the first argument."
+        
 evalinit :: ParseTree -> Double
+evalinit tree = eval [] tree
 
 interpret :: String -> Double
 interpret = evalinit.parse.scan
--}
+
