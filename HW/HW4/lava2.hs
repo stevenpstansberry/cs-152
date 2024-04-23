@@ -1,5 +1,5 @@
 {- CS 152 Homework 4:  Lava 2.0
-   Team Name:          -}
+   Team Name:   Boss Mode       -}
 module Lava2 where -- do not remove
 
 import Tokens2 -- Make sure you run alex to generate you scanner after you modify tokens2.x
@@ -11,7 +11,7 @@ data ParseTree
   | LetNode String ParseTree ParseTree
   | FunctionNode String ParseTree -- one formal parameter only lambda x (* 2 x)
   | Application ParseTree ParseTree -- First ParseTree is a FunctionNode
-  deriving (Show)
+  deriving (Show, Eq)
 
 -- Question 1 : implement the scan function below as a call to alexScanTokens
 scan :: String -> [Token]
@@ -23,6 +23,12 @@ scan = alexScanTokens
 -- this test case is supposed to give an error but it works
 --  stringToTree "let x 5  in lambda x 2"
 -- same with this one
+{-
+ghci> stringToTree "let x 5  in lambda x 2"
+LetNode "x" (NumNode 5.0) (FunctionNode "x" (NumNode 2.0))
+ghci> stringToTree "lambda x + 5 x"
+FunctionNode "x" (OpNode '+' (NumNode 5.0) (IdentNode "x"))
+-}
 
 parse :: [Token] -> ParseTree
 parse ts =
@@ -68,27 +74,19 @@ expr (Let : Identifier id : ts) =
         _ -> (Nothing, ts)
 -- <application>
 
-expr (Lambda : Identifier param : ts) =
-  let (maybeBody, rest1) = expr ts -- recursive call to expr
-   in case maybeBody of -- check to see if body is valid
-        Just body ->
-          -- Look ahead for possible application
-          case rest1 of
-            [] -> (Just (FunctionNode param body), rest1) -- check for application
-            _ ->
-              let (maybeArg, rest2) = expr rest1
-               in case maybeArg of
-                    Just arg -> (Just (Application (FunctionNode param body) arg), rest2) -- return application
-                    Nothing -> (Nothing, rest1)
-        Nothing -> (Nothing, ts)
 expr tokens = (Nothing, tokens)
+
 
 -- <function> -> LAMBDA  IDENTIFIER  <expr>
 
 function :: [Token] -> (Maybe ParseTree, [Token])
 function (Lambda : Identifier parameter : ts) =
-  let (Just body, rest1) = expr ts
-   in (Just (FunctionNode parameter body), rest1) -- return function node with parameter
+  let (body, rest1) = expr ts
+   in case body of
+    Just b -> case rest1 of
+        [] -> (Just (FunctionNode parameter b), rest1)
+        _ -> (Nothing, ts)
+    Nothing -> (Nothing, ts)  -- Error in parsing the body of the function
 function _ = (Nothing, [])
 
 -- <application> ->   <function> <expr>
