@@ -1,3 +1,9 @@
+% CS 152 Homework 5
+%  Team Name:   Boss Mode
+%  Maryia Sakharava
+%  Steven Stansberry
+
+
 % Part 1
 
 
