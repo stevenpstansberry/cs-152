@@ -11,6 +11,8 @@
 
 % q3: infront predicate
 
+infront(X, Y, [X, Y|_]). % base case, returns true if X and Y are two consecutive elements in that order
+infront(X, Y, [_|L]) :- infront(X, Y, L). % recursive case
 
 
 % q4: next predicate
