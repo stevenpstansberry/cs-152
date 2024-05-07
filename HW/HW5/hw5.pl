@@ -6,7 +6,7 @@
 
 
 % q2: first predicate
-
+first([X|_], X).
 
 
 % q3: infront predicate
