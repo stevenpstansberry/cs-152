@@ -2,7 +2,8 @@
 
 
 % q1: behind predicate
-
+behind(X, Y, [Y|L]) :- member(X, L). % base case, check if Y is head and if so, check if x is in the tail of the list
+behind(X, Y, [_|L]) :- behind(X, Y, L). % recursive case
 
 
 % q2: first predicate
