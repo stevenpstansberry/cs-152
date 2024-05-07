@@ -23,11 +23,49 @@ next(X, Y, [Y, X|_]). % base case 2, if Y immeditally precedes X
 next(X, Y, [_|L]) :- next(X, Y, L). % recursive case, 
 
 
+% part 2
 
+% Knowledge
+student(steven, _, _, blue, _).
+student(alex, _, _, _, business).
+student(_, bear, _, _, data_science).
+student(lisa, fluffy, _, _, cs).
+student(_, fido, husky, _, _).
 
+% solve method, still needs work 
+solve(RexOwner, LisaDogBreed) :-
+    Students = [student(alex, _, _, _, _),
+            student(lisa, _, LisaDogBreed, _, _),
+            student(sarah, _, _, _, _),
+            student(steven, _, _, _, _),
+            student(zoe, _, _, _, _)],
 
+    % Shirt Colors Knowledge
+    member(student(_, _, _, blue, _), Students),
+    member(student(_, _, _, green, _), Students),
+    member(student(_, _, _, purple, _), Students),
+    member(student(_, _, _, red, _), Students),
+    member(student(_, _, _, yellow, _), Students),
+    
+    % Dog Knowledge
+    member(student(_, angel, _, _, _), Students),
+    member(student(_, bear, _, _, _), Students),
+    member(student(_, fido, husky, _, _), Students), % fido is a husky
+    member(student(_, fluffy, _, _, _), Students),
+    member(student(RexOwner, rex, _, _, _), Students),
 
+    % Mapping
+    member(student(steven, _, _, blue, _), Students), % steven is wearing a blue shirt
+    member(student(lisa, fluffy, _, _, cs), Students), % lisa is adopting fluffy and is a cs major 
+    member(student(sarah, _, _, _, _), Students),
 
+    % idk if i did this right
+    behind(Students, student(sarah, _, _, _, _), 
+    student(lisa, _, _, _, _)),
 
+    behind(Students, student(sarah, _, _, _, _), 
+    student(_, _, labradoodle, _, _)),
 
+    behind(Students, student(_, fido, _, _, _), 
+    student(_, bear, _, _, _)).
 
